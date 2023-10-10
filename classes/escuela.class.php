@@ -22,7 +22,7 @@ class escuela
       echo 'Nombre materia: ' . $asignacion->getMateria() . '<br />';
       echo 'Cuatrimestre: ' . $asignacion->getCuatrimestre() . '<br />';
       echo 'Calificaciones: ' . $asignacion->getCalificaciones() . '<br />';
-      echo 'Promedio: ' . $asignacion->getPromedio() . '<br />';
+      echo 'Promedio: ' . number_format($asignacion->getPromedio(), 2) . '<br />';
       echo 'Estado: ' . $asignacion->getEstado() . '<br /><br />';
     }
   }

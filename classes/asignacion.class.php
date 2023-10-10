@@ -4,21 +4,26 @@ class asignacion
 {
   private alumno $alumno;
   private materia $materia;
-  private float $primerParcial;
-  private float $segundoParcial;
-  private float $trabajoPractico;
+  private array $notas = [];
   private float $promedio;
   private string $estado;
 
-  public function __construct(alumno $_alumno, materia $_materia, float $_primerParcial, float $_segundoParcial, float $_trabajoPractico)
+  public function __construct(alumno $_alumno, materia $_materia, array $_notas)
   {
     $this->alumno = $_alumno;
     $this->materia = $_materia;
-    $this->primerParcial = number_format($_primerParcial, 2);
-    $this->segundoParcial = number_format($_segundoParcial, 2);
-    $this->trabajoPractico = number_format($_trabajoPractico, 2);
+    $this->notas = $_notas;
     $this->calcularPromedio();
     $this->estado();
+  }
+
+  public function getCalificaciones(): string
+  {
+    $stringNotas = '';
+    foreach ($this->notas as $nota) {
+      $stringNotas .= '<br />' . ' - ' . $nota->getTipo() . ' ' . $nota->getNota();
+    }
+    return $stringNotas;
   }
 
   public function getAlumno(): string
@@ -36,14 +41,6 @@ class asignacion
     return $this->materia->getCuatrimestre();
   }
 
-  public function getCalificaciones(): string
-  {
-    return
-      '- Primer parcial: ' . $this->primerParcial . '<br />' .
-      '- Segundo parcial: ' . $this->segundoParcial . '<br />' .
-      '- Trabajo práctico: ' . $this->trabajoPractico;
-  }
-
   public function getPromedio(): float
   {
     return $this->promedio;
@@ -56,10 +53,11 @@ class asignacion
 
   public function calcularPromedio(): void
   {
-    $this->promedio = number_format(($this->primerParcial +
-      $this->segundoParcial +
-      $this->trabajoPractico
-    ) / 3, 2);
+    $total = 0;
+    foreach ($this->notas as $nota) {
+      $total += $nota->getNota();
+    }
+    $this->promedio = $total / count($this->notas);
   }
 
   public function estado(): void
